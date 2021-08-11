@@ -179,7 +179,7 @@ export function generateForLastDigits(
     (digitsForSecondNum:The number of digits in the second number)
   }, 
 */
-function generateForTwoNumber(
+export function generateForTwoNumber(
   possibilities: PossibilityTree,
   possibilitiesArrForLastDigit: number[],
   allGenerateNum: string[],
@@ -247,7 +247,7 @@ function generateForTwoNumber(
     );
   }
 }
-//// To create one from two numbers
+//// To generate one from two numbers
 function generateNumber(
   possibilities: PossibilityTree,
   possibilitiesArrForLastDigit: number[],
