@@ -13,7 +13,7 @@ let possibilityTree: PossibilityTree = {
     3: { Easy: [''], Difficult: [''], medium: [''] }
   }
 };
-let possibilitiesArrForLastDigit = [''];
+let possibilitiesArrForLastDigit = [0];
 // Write TypeScript code!
 const appDiv: HTMLElement = document.getElementById('app');
 appDiv.innerHTML = `<h1>TypeScript Starter</h1>`;

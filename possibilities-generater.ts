@@ -88,30 +88,23 @@ function possibilitiesGenerator(
 }
 //possibilities for mor then three digits of number
 export function generateForLastDigits(
-  arr: string[],
-  rules: number,
-  digits: number,
+  arr: number[],
+  digitsForFirstNum: number,
+  digitsForSecondNum: number,
   level: string
-) {
-  let copyOf = {
-    generationArr: [''],
-    generate: {
-      answers: [5, 5, 5, 5],
-      firstNumber: 5,
-      secondNumber: 5
-    }
-  };
-  let fNum = generateNumberWithSpesificDigits(digits, level);
-  let sNum = generateNumberWithSpesificDigits(digits, level);
-  const fullQuestionNum = fNum.toString() + '*' + sNum.toString();
-  if (arr.indexOf(fullQuestionNum) == -1) {
-    arr.push(fullQuestionNum);
-    copyOf.generationArr = arr;
-    copyOf.generate.answers = ansArray(fNum, sNum);
-    copyOf.generate.firstNumber = fNum;
-    copyOf.generate.secondNumber = sNum;
+  ) {
+  generationArr: [''];
+  let fNum = generateNumberWithSpesificDigits(digitsForFirstNum, level);
+  
+  if (arr.indexOf(fNum) == -1) {
+    arr.push(fNum);
   } else {
-    return generateForLastDigits(arr, rules, digits, level);
+    return generateForLastDigits(
+      arr,
+      digitsForFirstNum,
+      digitsForSecondNum,
+      level
+    );
   }
 
   return copyOf;
