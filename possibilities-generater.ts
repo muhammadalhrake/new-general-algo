@@ -1,5 +1,6 @@
 import { PossibilityTree } from './101.Model';
 import random from 'random';
+import * as _ from "lodash";
 ///helper function
 function between(min: number, max: number) {
   return random.int(min, max);
@@ -12,7 +13,6 @@ const firstDifficultDigits = () => between(5, 9);
 const reduceArr = (arr: string[][]) => {
   return arr.reduce((accumulator, value) => accumulator.concat(value), []);
 };
-
 function generateNumberWithSpesificDigits(digits: number, level: string) {
   let numbers = [''];
   for (let digit = 1; digit <= digits; digit++) {
@@ -168,18 +168,13 @@ export function generateForLastDigits(
     copyOf.numberGenerate = fNum;
     return copyOf;
   } else {
-    return generateForLastDigits(
-      arr,
-      digitsForNum,
-      level
-    );
+    return generateForLastDigits(arr, digitsForNum, level);
   }
-
 }
 /* function for generate  two number with spesific digits 
-  {(ARGUMENT OF FUNCTION )=(possibilityTree:for first three digits in ether number )
+  {(ARGUMENT OF FUNCTION )=(possibilityTree:for first three digits in both number )
     ,(possibilitiesArrForLastDigit : for last digit bigger than three digits),
-    (allGenerateNum:The mixture of probabilities between the first and second numbers combined in the same generated question),(digitsForFirstNum:The number of digits in the first number),
+    (allGenerateNum:The mixture of probabilities between the first and second numbers combined in the same generated question =>mumber be like 45*32),(digitsForFirstNum:The number of digits in the first number),
     (digitsForSecondNum:The number of digits in the second number)
   }, 
 */
@@ -191,30 +186,77 @@ function generateForTwoNumber(
   digitsForSecondNum: number,
   level: string
 ) {
-
+  let generatorBag = {
+    newpossibilities: possibilities,
+    newpossibilitiesArrForLastDigit: possibilitiesArrForLastDigit,
+    allNumberGenerated: allGenerateNum,
+    generatedQuestion: {
+      answers: [1, 1, 1, 1],
+      firstNumber: 1,
+      secondNumber: 1
+    }
+  };
+  const firstGeneratedNumber = generateNumber(
+    possibilities,
+    possibilitiesArrForLastDigit,
+    digitsForFirstNum,
+    1,
+    level
+  );
+  const secondGeneratedNumber = generateNumber(
+    possibilities,
+    possibilitiesArrForLastDigit,
+    digitsForSecondNum,
+    2,
+    level
+  );
+  const AmultiplyB =
+    firstGeneratedNumber.numberGenerated.toString() +
+    '*' +
+    secondGeneratedNumber.numberGenerated.toString();
+  /* to confirm that the generated question  is not generated before */
+  if (allGenerateNum.indexOf(AmultiplyB) == -1) {
+    allGenerateNum.push();
+    generatorBag.allNumberGenerated = allGenerateNum;
+    generatorBag.newpossibilities[1][digitsForFirstNum][level] =
+      firstGeneratedNumber.newPossibilitiesTree[1][digitsForFirstNum][level];
+    generatorBag.newpossibilities[2][digitsForSecondNum][level] =
+      secondGeneratedNumber.newPossibilitiesTree[2][digitsForSecondNum][level];
+    generatorBag.newpossibilitiesArrForLastDigit=_.intersection(firstGeneratedNumber.newPossibilitiesArrForLastDigit,secondGeneratedNumber.newPossibilitiesArrForLastDigit);
+    generatorBag.generatedQuestion.answers=
+  }
 }
-//// To create one from two numbers 
+//// To create one from two numbers
 function generateNumber(
   possibilities: PossibilityTree,
   possibilitiesArrForLastDigit: number[],
-  digitsForFirstNum: number,
-  wichNumber:number, 
+  digitsForNum: number,
+  wichNumber: number,
   level: string
 ) {
-  let copyOf={
-    newPossibilitiesTree:possibilities,
-    newPossibilitiesArrForLastDigit:possibilitiesArrForLastDigit,
-    numberGenerated:1
-  }
-  if(digitsForFirstNum<=3){
-    const originNumber= generateForFirstThreeDigits(possibilities,wichNumber,digitsForFirstNum,level)
-    copyOf.newPossibilitiesTree=originNumber.possibel;
-    copyOf.numberGenerated=originNumber.numberGenerate;
-    return copyOf
-  }else {
-    const originNumber =generateForLastDigits(possibilitiesArrForLastDigit,digitsForFirstNum,level);
-    copyOf.newPossibilitiesArrForLastDigit=originNumber.generationArr;
-    copyOf.numberGenerated=originNumber.numberGenerate;
-    return copyOf
+  let copyOf = {
+    newPossibilitiesTree: possibilities,
+    newPossibilitiesArrForLastDigit: possibilitiesArrForLastDigit,
+    numberGenerated: 1
+  };
+  if (digitsForNum <= 3) {
+    const originNumber = generateForFirstThreeDigits(
+      possibilities,
+      wichNumber,
+      digitsForNum,
+      level
+    );
+    copyOf.newPossibilitiesTree = originNumber.possibel;
+    copyOf.numberGenerated = originNumber.numberGenerate;
+    return copyOf;
+  } else {
+    const originNumber = generateForLastDigits(
+      possibilitiesArrForLastDigit,
+      digitsForNum,
+      level
+    );
+    copyOf.newPossibilitiesArrForLastDigit = originNumber.generationArr;
+    copyOf.numberGenerated = originNumber.numberGenerate;
+    return copyOf;
   }
 }
