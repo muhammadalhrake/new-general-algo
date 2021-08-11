@@ -1,6 +1,7 @@
 import { PossibilityTree } from './101.Model';
 import random from 'random';
-import * as _ from "lodash";
+import * as _ from 'lodash';
+import { ansArray } from './general-answer';
 ///helper function
 function between(min: number, max: number) {
   return random.int(min, max);
@@ -222,8 +223,28 @@ function generateForTwoNumber(
       firstGeneratedNumber.newPossibilitiesTree[1][digitsForFirstNum][level];
     generatorBag.newpossibilities[2][digitsForSecondNum][level] =
       secondGeneratedNumber.newPossibilitiesTree[2][digitsForSecondNum][level];
-    generatorBag.newpossibilitiesArrForLastDigit=_.intersection(firstGeneratedNumber.newPossibilitiesArrForLastDigit,secondGeneratedNumber.newPossibilitiesArrForLastDigit);
-    generatorBag.generatedQuestion.answers=
+    generatorBag.newpossibilitiesArrForLastDigit = _.intersection(
+      firstGeneratedNumber.newPossibilitiesArrForLastDigit,
+      secondGeneratedNumber.newPossibilitiesArrForLastDigit
+    );
+    generatorBag.generatedQuestion.answers = ansArray(
+      firstGeneratedNumber.numberGenerated,
+      secondGeneratedNumber.numberGenerated
+    );
+    generatorBag.generatedQuestion.firstNumber =
+      firstGeneratedNumber.numberGenerated;
+    generatorBag.generatedQuestion.secondNumber =
+      secondGeneratedNumber.numberGenerated;
+    return generatorBag;
+  } else {
+    return generateForTwoNumber(
+      possibilities,
+      possibilitiesArrForLastDigit,
+      allGenerateNum,
+      digitsForFirstNum,
+      digitsForSecondNum,
+      level
+    );
   }
 }
 //// To create one from two numbers
