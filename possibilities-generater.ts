@@ -154,29 +154,27 @@ export const generateForFirstThreeDigits = (
 //possibilities for mor then three digits of number
 export function generateForLastDigits(
   arr: number[],
-  digitsForFirstNum: number,
-  digitsForSecondNum: number,
+  digitsForNum: number,
   level: string
 ) {
   let copyOf = {
     generationArr: [0],
-    fNum: 1
+    numberGenerate: 1
   };
-  let fNum = generateNumberWithSpesificDigits(digitsForFirstNum, level);
+  let fNum = generateNumberWithSpesificDigits(digitsForNum, level);
   if (arr.indexOf(fNum) == -1) {
     arr.push(fNum);
     copyOf.generationArr = arr;
-    copyOf.fNum = fNum;
+    copyOf.numberGenerate = fNum;
+    return copyOf;
   } else {
     return generateForLastDigits(
       arr,
-      digitsForFirstNum,
-      digitsForSecondNum,
+      digitsForNum,
       level
     );
   }
 
-  return copyOf;
 }
 /* function for generate  two number with spesific digits 
   {(ARGUMENT OF FUNCTION )=(possibilityTree:for first three digits in ether number )
@@ -191,5 +189,32 @@ function generateForTwoNumber(
   allGenerateNum: string[],
   digitsForFirstNum: number,
   digitsForSecondNum: number,
-  level: string[]
-) {}
+  level: string
+) {
+
+}
+//// To create one from two numbers 
+function generateNumber(
+  possibilities: PossibilityTree,
+  possibilitiesArrForLastDigit: number[],
+  digitsForFirstNum: number,
+  wichNumber:number, 
+  level: string
+) {
+  let copyOf={
+    newPossibilitiesTree:possibilities,
+    newPossibilitiesArrForLastDigit:possibilitiesArrForLastDigit,
+    numberGenerated:1
+  }
+  if(digitsForFirstNum<=3){
+    const originNumber= generateForFirstThreeDigits(possibilities,wichNumber,digitsForFirstNum,level)
+    copyOf.newPossibilitiesTree=originNumber.possibel;
+    copyOf.numberGenerated=originNumber.numberGenerate;
+    return copyOf
+  }else {
+    const originNumber =generateForLastDigits(possibilitiesArrForLastDigit,digitsForFirstNum,level);
+    copyOf.newPossibilitiesArrForLastDigit=originNumber.generationArr;
+    copyOf.numberGenerated=originNumber.numberGenerate;
+    return copyOf
+  }
+}
