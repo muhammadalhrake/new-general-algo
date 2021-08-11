@@ -86,3 +86,54 @@ function possibilitiesGenerator(
     }
   }
 }
+
+export function generateForLastDigits(
+  arr: number[],
+  rules: number,
+  digits: number,
+  level: string
+) {
+  let copyOf = {
+    generationArr: [0],
+    generate: {
+      answers: [5, 5, 5, 5],
+      firstNumber: 5,
+      secondNumber: 5
+    }
+  };
+  let numbers = [''];
+  for (let digit = 1; digit <= digits; digit++) {
+    let generation;
+    if (level == 'Easy') {
+      if (digit == 1) {
+        generation = firstEasyDigits();
+      } else {
+        generation = lastEasyDigits();
+      }
+    } else if (level == 'medium') {
+      if (digit % 2 == 0) {
+        generation = firstEasyDigits();
+      } else {
+        generation = firstDifficultDigits();
+      }
+    } else if (level == 'Difficult') {
+      generation = firstDifficultDigits();
+    }
+    numbers[digit] = generation;
+  }
+  let num = +numbers.join('');
+
+  if (arr.indexOf(num) == -1) {
+    let fNum = +(rules.toString() + '0' + rules.toString());
+    let sNum = num;
+    arr.push(num);
+    copyOf.generationArr = arr;
+    copyOf.generate.answers = ansArray(fNum, sNum);
+    copyOf.generate.firstNumber = fNum;
+    copyOf.generate.secondNumber = sNum;
+  } else {
+    return generateForLastDigits(arr, rules, digits, level);
+  }
+
+  return copyOf;
+}
