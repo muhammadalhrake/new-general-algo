@@ -178,11 +178,13 @@ export function generateForLastDigits(
 
   return copyOf;
 }
-
+/* function for generate  two number with spesific digits 
+{(ARGUMENT OF FUNCTION )=(possibilityTree:for first three digits in ether number ),(possibilitiesArrForLastDigit : for last digit bigger than three digits),(allGenerateNum:The mixture of probabilities between the first and second numbers combined in the same generated question),(digitsForFirstNum:The number of digits in the first number),(digitsForSecondNum:The number of digits in the second number)}, */
 function generateForTwoNumber(
   possibilities: PossibilityTree,
+  possibilitiesArrForLastDigit: number[],
   allGenerateNum: string[],
-  digitsForFirstNum: string[],
-  digitsForSecondNum: string[],
+  digitsForFirstNum: number,
+  digitsForSecondNum: number,
   level: string[]
 ) {}
