@@ -86,7 +86,7 @@ function possibilitiesGenerator(
     }
   }
 }
-
+//possibilities for mor then three digits of number 
 export function generateForLastDigits(
   arr: number[],
   rules: number,
