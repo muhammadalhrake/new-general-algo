@@ -86,21 +86,37 @@ function possibilitiesGenerator(
     }
   }
 }
-//possibilities for mor then three digits of number 
+//possibilities for mor then three digits of number
 export function generateForLastDigits(
-  arr: number[],
+  arr: string[],
   rules: number,
   digits: number,
   level: string
 ) {
   let copyOf = {
-    generationArr: [0],
+    generationArr: [''],
     generate: {
       answers: [5, 5, 5, 5],
       firstNumber: 5,
       secondNumber: 5
     }
   };
+  let fNum = generateNumberWithSpesificDigits(digits, level);
+  let sNum = generateNumberWithSpesificDigits(digits, level);
+  const fullQuestionNum = fNum.toString() + '*' + sNum.toString();
+  if (arr.indexOf(fullQuestionNum) == -1) {
+    arr.push(fullQuestionNum);
+    copyOf.generationArr = arr;
+    copyOf.generate.answers = ansArray(fNum, sNum);
+    copyOf.generate.firstNumber = fNum;
+    copyOf.generate.secondNumber = sNum;
+  } else {
+    return generateForLastDigits(arr, rules, digits, level);
+  }
+
+  return copyOf;
+}
+function generateNumberWithSpesificDigits(digits: number, level: string) {
   let numbers = [''];
   for (let digit = 1; digit <= digits; digit++) {
     let generation;
@@ -121,19 +137,12 @@ export function generateForLastDigits(
     }
     numbers[digit] = generation;
   }
-  let num = +numbers.join('');
-
-  if (arr.indexOf(num) == -1) {
-    let fNum = +(rules.toString() + '0' + rules.toString());
-    let sNum = num;
-    arr.push(num);
-    copyOf.generationArr = arr;
-    copyOf.generate.answers = ansArray(fNum, sNum);
-    copyOf.generate.firstNumber = fNum;
-    copyOf.generate.secondNumber = sNum;
-  } else {
-    return generateForLastDigits(arr, rules, digits, level);
-  }
-
-  return copyOf;
+  return +numbers.join('');
 }
+function generateForTwoNumber(
+  possibilities: PossibilityTree,
+  allGenerateNum: string[],
+  digitsForFirstNum: string[],
+  digitsForSecondNum: string[],
+  level: string[]
+) {}
