@@ -15,17 +15,37 @@ let possibilityTree: PossibilityTree = {
   }
 };
 let possibilitiesArrForLastDigit = [0];
-let allNumberGenerated = [''];
-console.log(
-  generateForTwoNumber(
-    possibilityTree,
-    possibilitiesArrForLastDigit,
-    allNumberGenerated,
-    1,
-    1,
-    'Easy'
-  ).generatedQuestion
-);
+let currentNumbers = [''];
+
+function mainGeneralGeneration(count:number ,digitsForFirstNum:string[],digitsForSecondNum:string[],levels:string[]){
+  let generationArray= new Array();
+  for(let i =0 ;i<count;){
+    for(let j=0;j<digitsForFirstNum.length&&i<count;j++){
+      for(let k=0;k<digitsForSecondNum.length&&i<count;k++){
+        for(let l=0;l<levels.length&&i<count;l++){
+          //initial the settings 
+           const FNDigit=+digitsForFirstNum[j];
+           const SNDigit=+digitsForSecondNum[k];
+           const level=levels[l];
+           const generator=generateForTwoNumber(possibilityTree,possibilitiesArrForLastDigit,currentNumbers,FNDigit,SNDigit,level)
+           //get the question value 
+           const question=generator.generatedQuestion;
+           //Update global values to Preserve the probability values without repetition
+           possibilityTree=generator.newpossibilities;
+           currentNumbers=generator.allNumberGenerated;
+           possibilitiesArrForLastDigit=generator.newpossibilitiesArrForLastDigit;
+           //push the qustion value to our array question
+           generationArray.push(question);
+           i++;
+        }
+      }
+    }
+  }
+  return generationArray;
+}
+
+//console.log(mainGeneralGeneration(8,['1'],['1'],['Easy']) , currentNumbers)
+//console.log(generateForTwoNumber(possibilityTree,possibilitiesArrForLastDigit,allNumberGenerated,1,1,'Easy').generatedQuestion);
 // Write TypeScript code!
 const appDiv: HTMLElement = document.getElementById('app');
 appDiv.innerHTML = `<h1>TypeScript Starter</h1>`;
