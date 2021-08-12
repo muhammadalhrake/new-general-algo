@@ -60,7 +60,7 @@ function mainGeneralGeneration(
   return generationArray;
 }
 //setInterval(()=>console.log(generateForLastDigits(possibilitiesArrForLastDigit,4,"Easy") ),300)
-console.log(mainGeneralGeneration(40,['2'],['2','1'],['Difficult','Easy']))
+console.log(mainGeneralGeneration(40, ['2'], ['2', '1'], ['Easy']));
 //console.log(generateForTwoNumber(possibilityTree,possibilitiesArrForLastDigit,allNumberGenerated,1,1,'Easy').generatedQuestion);
 // Write TypeScript code!
 const appDiv: HTMLElement = document.getElementById('app');
