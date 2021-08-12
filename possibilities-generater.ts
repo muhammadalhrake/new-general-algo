@@ -211,18 +211,19 @@ export function generateForTwoNumber(
     2,
     level
   );
+
   const AmultiplyB =
     firstGeneratedNumber.numberGenerated.toString() +
     '*' +
     secondGeneratedNumber.numberGenerated.toString();
   /* to confirm that the generated question  is not generated before */
   if (allGenerateNum.indexOf(AmultiplyB) == -1) {
-    allGenerateNum.push();
+    allGenerateNum.push(AmultiplyB);
     generatorBag.allNumberGenerated = allGenerateNum;
-    generatorBag.newpossibilities[1][digitsForFirstNum][level] =
-      firstGeneratedNumber.newPossibilitiesTree[1][digitsForFirstNum][level];
-    generatorBag.newpossibilities[2][digitsForSecondNum][level] =
-      secondGeneratedNumber.newPossibilitiesTree[2][digitsForSecondNum][level];
+    generatorBag.newpossibilities[1] =
+      firstGeneratedNumber.newPossibilitiesTree[1];
+    generatorBag.newpossibilities[2] =
+      secondGeneratedNumber.newPossibilitiesTree[2];
     generatorBag.newpossibilitiesArrForLastDigit = _.intersection(
       firstGeneratedNumber.newPossibilitiesArrForLastDigit,
       secondGeneratedNumber.newPossibilitiesArrForLastDigit
